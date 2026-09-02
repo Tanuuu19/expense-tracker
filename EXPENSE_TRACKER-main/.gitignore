@@ -1,0 +1,13 @@
+# Ignore the generated graph images
+/static/graphs/*.png
+
+# Ignore the SQLite database
+expense_data.db
+
+# Python bytecode and cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environment
+venv/
+# .env

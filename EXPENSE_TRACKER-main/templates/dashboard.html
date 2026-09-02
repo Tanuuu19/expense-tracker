@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="header-container">
+        <h2>Welcome, {{ session['username'] }}!</h2>
+        <a href="{{ url_for('profile') }}" class="btn profile-btn">My Profile</a>
+    </div>
+    
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Income</h3>
+            <p>{{ currency }}{{ "%.2f"|format(income) }}</p>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Expenses</h3>
+            <p>{{ currency }}{{ "%.2f"|format(expenses) }}</p>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Savings</h3>
+            <p class="{% if savings < 0 %}negative{% else %}positive{% endif %}">
+                {{ currency }}{{ "%.2f"|format(savings) }}
+            </p>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Outstanding</h3>
+            <p class="{% if outstanding < 0 %}negative{% else %}positive{% endif %}">
+                {{ currency }}{{ "%.2f"|format(outstanding) }}
+            </p>
+        </div>
+
+        
+    </div>
+
+    <!-- Add a container around your balance card -->
+    <div class="balance-container">
+        <div class="stat-card balance-card">
+            <h3>Balance</h3>
+            <p class="{% if balance < 0 %}negative{% else %}positive{% endif %}">
+                {{ currency }}{{ "%.2f"|format(balance) }}
+            </p>
+        </div>
+    </div>
+    
+    <div class="graph-container">
+        {% if graph_path %}
+        <img src="{{ url_for('static', filename=graph_path.replace('static/', '')) }}?v={{ config['VERSION'] }}" alt="Financial Graph">
+        {% else %}
+            <p class="no-data">No financial data available for this period</p>
+        {% endif %}
+    </div>
+    
+    <div>
+        <a href="{{ url_for('add_expense') }}" class="btn">Add Expense/Income</a>
+        <a href="{{ url_for('statistics') }}" class="btn">Get Statistics</a>
+        <!-- <a href="{{ url_for('profile') }}" class="btn">My Profile</a> -->
+    </div>
+    
+    {% if advice %}
+    <div class="advice">
+        <h3>Financial Advice</h3>
+        <ul>
+            {% for item in advice %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% endblock %}
